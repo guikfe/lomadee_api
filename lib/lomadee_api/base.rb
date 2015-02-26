@@ -2,8 +2,13 @@ module LomadeeApi
   class Base
     include HTTParty
 
-    def initialize(application_id, sandbox = false, country = "BR")
-      raise "You need to inform your :application_id" if application_id.nil?
+    def initialize(params = {})
+      raise "You need to inform your :application_id" if params[:application_id].nil?
+
+      @application_id = params[:application_id]
+      @country = params[:country] || 'BR'
+
+      sandbox = params[:sandbox] || false
 
       case sandbox
       when false
@@ -12,8 +17,6 @@ module LomadeeApi
         self.class.base_uri "http://sandbox.buscape.com"
       end
 
-      @application_id = application_id
-      @country = country
     end
 
     def products(category_id)
