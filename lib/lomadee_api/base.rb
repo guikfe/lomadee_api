@@ -30,7 +30,7 @@ module LomadeeApi
         @totalpages = @response['totalpages']
         @page += 1
 
-        yield @response['product']
+        yield @response['product'] if @response
       end
     end
 
@@ -44,7 +44,7 @@ module LomadeeApi
         @totalpages = @response['totalpages']
         @page += 1
 
-        yield @response['offer'], @response['product'][0]['product']['productdetails']
+        yield @response['offer'], @response['product'][0]['product']['productdetails'] if @response
       end
     end
   end
