@@ -7,6 +7,7 @@ module LomadeeApi
 
       @application_id = params[:application_id]
       @country = params[:country] || 'BR'
+      @source_id = params[:source_id]
 
       sandbox = params[:sandbox] || false
 
@@ -37,13 +38,13 @@ module LomadeeApi
       @page = @totalpages = 1
 
       while @page <= @totalpages
-        offers = self.class.get("/service/findOfferList/lomadee/#{@application_id}/#{@country}/", query: {productId: product_id, format: 'json', page: @page})
+        offers = self.class.get("/service/findOfferList/lomadee/#{@application_id}/#{@country}/", query: {productId: product_id, format: 'json', page: @page, sourceId: @source_id})
 
         @response = JSON.parse(offers.body)
         @totalpages = @response['totalpages']
         @page += 1
 
-        yield @response['offer']
+        yield @response['offer'], @response['product'][0]['product']['productdetails']
       end
     end
   end
